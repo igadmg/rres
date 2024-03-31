@@ -52,30 +52,30 @@ int main(void)
     const int screenHeight = 512;
 
     InitWindow(screenWidth, screenHeight, "rres example - rres load image");
-    
+
     Texture2D texture = { 0 };          // Texture to load our image data
-    
+
     // Load central directory from .rres file (if available)
     rresCentralDir dir = rresLoadCentralDirectory("resources.rres");
-    
+
     // Get resource id from original fileName (stored in centra directory)
     unsigned int id = rresGetResourceId(dir, "resources/images/fudesumi.png");
-    
+
     // Setup password to load encrypted data (if required)
     rresSetCipherPassword("password12345");
-    
+
     // Load resource chunk from file providing the id
     rresResourceChunk chunk = rresLoadResourceChunk("resources.rres", id);
-    
+
     // Decompress/decipher resource data (if required)
     int result = UnpackResourceChunk(&chunk);
-    
+
     if (result == RRES_SUCCESS)         // Data decompressed/decrypted successfully
     {
         // Load image data from resource chunk
         Image image = LoadImageFromResource(chunk);
         texture = LoadTextureFromImage(image);
-        UnloadImage(image);
+        UnloadImage(&image);
     }
 
     rresUnloadResourceChunk(chunk);     // Unload resource chunk

@@ -98,7 +98,7 @@ int main(void)
                     for (unsigned int i = 0; i < dir.count; i++)
                     {
                         TraceLog(LOG_INFO, "RRES: CDIR: File entry %03i: %s | Resource(s) id: 0x%08x | Offset: 0x%08x", i + 1, dir.entries[i].fileName, dir.entries[i].id, dir.entries[i].offset);
-                    
+
                         // TODO: List contained resource chunks info
                         //rresResourceChunkInfo info = rresGetResourceChunkInfo(droppedFiles.paths[0], dir.entries[i]);
                     }
@@ -139,7 +139,7 @@ int main(void)
                 rresUnloadResourceChunk(chunk);
                 //------------------------------------------------------------------------------------------------------
                 */
-                
+
                 // TEST 04: Load image data (RRES_DATA_IMAGE)
                 //------------------------------------------------------------------------------------------------------
                 chunk = rresLoadResourceChunk(droppedFiles.paths[0], rresGetResourceId(dir, "fudesumi.png"));
@@ -151,7 +151,7 @@ int main(void)
                     if (image.data != NULL)
                     {
                         texture = LoadTextureFromImage(image);
-                        UnloadImage(image);
+                        UnloadImage(&image);
                     }
                 }
 
@@ -172,7 +172,7 @@ int main(void)
 
                 rresUnloadResourceChunk(chunk);
                 //------------------------------------------------------------------------------------------------------
-                
+
                 // TEST 06: Load font data, multiples chunks (RRES_DATA_FONT_GLYPHS + RRE_DATA_IMAGE)
                 //------------------------------------------------------------------------------------------------------
                 multi = rresLoadResourceMulti(droppedFiles.paths[0], rresGetResourceId(dir, "pixantiqua.ttf"));
@@ -186,10 +186,10 @@ int main(void)
                 {
                     font = LoadFontFromResource(multi);
                 }
-                
+
                 rresUnloadResourceMulti(multi);
                 //------------------------------------------------------------------------------------------------------
-                
+
                 // Unload central directory info, not required any more
                 rresUnloadCentralDirectory(dir);
             }
