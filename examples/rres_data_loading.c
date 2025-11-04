@@ -167,7 +167,7 @@ int main(void)
                 {
                     Wave wave = LoadWaveFromResource(chunk);
                     sound = LoadSoundFromWave(wave);
-                    UnloadWave(wave);
+                    UnloadWave(&wave);
                 }
 
                 rresUnloadResourceChunk(chunk);
@@ -226,9 +226,9 @@ int main(void)
     //--------------------------------------------------------------------------------------
     MemFree(data);              // Unload raw data, using raylib memory allocator (same used by rres-raylib.h)
     MemFree(text);              // Unload text data, using raylib memory allocator (same used by rres-raylib.h)
-    UnloadTexture(texture);     // Unload texture (VRAM)
-    UnloadSound(sound);         // Unload sound
-    UnloadFont(font);           // Unload font
+    UnloadTexture(&texture);    // Unload texture (VRAM)
+    UnloadSound(&sound);        // Unload sound
+    UnloadFont(&font);          // Unload font
 
     CloseAudioDevice();         // Close audio device
 

@@ -100,7 +100,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(texture);             // Unload texture (VRAM)
+    UnloadTexture(&texture);            // Unload texture (VRAM)
     CloseWindow();                      // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

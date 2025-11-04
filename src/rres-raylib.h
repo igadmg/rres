@@ -168,7 +168,6 @@ static char *LoadTextFromResourceChunk(rresResourceChunk chunk, unsigned int *co
 static Image LoadImageFromResourceChunk(rresResourceChunk chunk);                        // Load chunk: RRES_DATA_IMAGE
 
 static const char *GetExtensionFromProps(unsigned int ext01, unsigned int ext02);        // Get file extension from RRES_DATA_RAW properties (unsigned int)
-static unsigned int *ComputeMD5(const unsigned char *data, int size);                    // Compute MD5 hash code, returns 4 integers array (static)
 
 //----------------------------------------------------------------------------------
 // Module Functions Definition
@@ -350,7 +349,7 @@ Font LoadFontFromResource(rresResourceMulti multi)
             if ((multi.chunks[0].info.compType == RRES_COMP_NONE) && (multi.chunks[0].info.cipherType == RRES_CIPHER_NONE))
             {
                 Image image = LoadImageFromResourceChunk(multi.chunks[1]);
-                font.texture = LoadTextureFromImage(&image);
+                font.texture = LoadTextureFromImage(image);
                 UnloadImage(&image);
             }
             else RRES_LOG("RRES: %s: WARNING: Data must be decompressed/decrypted\n", multi.chunks[1].info.type);
@@ -409,7 +408,7 @@ Mesh LoadMeshFromResource(rresResourceMulti multi)
             if (rresGetDataType(multi.chunks[i].info.type) == RRES_DATA_VERTEX)
             {
                 // In case vertex count do not match we skip that resource chunk
-                if ((multi.chunks[i].data.props[1] != RRES_VERTEX_ATTRIBUTE_INDEX) && (multi.chunks[i].data.props[0] != mesh.vertexCount)) continue;
+                if ((multi.chunks[i].data.props[1] != RRES_VERTEX_ATTRIBUTE_INDEX) && (multi.chunks[i].data.props[0] != (unsigned int)mesh.vertexCount)) continue;
 
                 // NOTE: We are only loading raylib supported rresVertexFormat and raylib expected components count
                 switch (multi.chunks[i].data.props[1])    // Check rresVertexAttribute value
@@ -729,7 +728,7 @@ int UnpackResourceChunk(rresResourceChunk *chunk)
                 }
 
                 // Security check, uncompDataSize must match the provided chunk->baseSize
-                if (uncompDataSize != chunk->info.baseSize) RRES_LOG("RRES: WARNING: Decompressed data could be corrupted, unexpected size\n");
+                if ((unsigned int)uncompDataSize != chunk->info.baseSize) RRES_LOG("RRES: WARNING: Decompressed data could be corrupted, unexpected size\n");
             } break;
 #if defined(RRES_SUPPORT_COMPRESSION_LZ4)
             case RRES_COMP_LZ4:
@@ -775,7 +774,7 @@ int UnpackResourceChunk(rresResourceChunk *chunk)
                     RRES_LOG("RRES: WARNING: %c%c%c%c: Chunk data decompression failed\n", chunk->info.type[0], chunk->info.type[1], chunk->info.type[2], chunk->info.type[3]);
                 }
 
-                if (uncompDataSize != chunk->info.baseSize) RRES_LOG("RRES: WARNING: Decompressed data could be corrupted, unexpected size\n");
+                if ((unsigned int)uncompDataSize != chunk->info.baseSize) RRES_LOG("RRES: WARNING: Decompressed data could be corrupted, unexpected size\n");
             } break;
             default:
             {
