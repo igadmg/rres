@@ -350,7 +350,7 @@ Font LoadFontFromResource(rresResourceMulti multi)
             {
                 Image image = LoadImageFromResourceChunk(multi.chunks[1]);
                 font.texture = LoadTextureFromImage(image);
-                UnloadImage(&image);
+                UnloadImage(image);
             }
             else RRES_LOG("RRES: %s: WARNING: Data must be decompressed/decrypted\n", multi.chunks[1].info.type);
         }

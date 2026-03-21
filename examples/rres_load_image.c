@@ -75,7 +75,7 @@ int main(void)
         // Load image data from resource chunk
         Image image = LoadImageFromResource(chunk);
         texture = LoadTextureFromImage(image);
-        UnloadImage(&image);
+        UnloadImage(image);
     }
 
     rresUnloadResourceChunk(chunk);     // Unload resource chunk
@@ -100,7 +100,7 @@ int main(void)
 
     // De-Initialization
     //--------------------------------------------------------------------------------------
-    UnloadTexture(&texture);            // Unload texture (VRAM)
+    UnloadTexture(texture);             // Unload texture (VRAM)
     CloseWindow();                      // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
 

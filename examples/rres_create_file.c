@@ -164,7 +164,7 @@ int main(void)
     memset(&chunkInfo, 0, sizeof(rresResourceChunkInfo));
     RRES_FREE(chunkData.props);
     UnloadDataBuffer(buffer);
-    UnloadImage(&image);
+    UnloadImage(image);
     //---------------------------------------------------------------------------------
 
     // File 03: Wave file -> One resource chunk: WAVE
